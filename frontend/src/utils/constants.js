@@ -1,0 +1,1 @@
+export const systemPrompt = 'You are an expert prompt engineer. Transform the following simple request into a 50-word descriptive masterpiece including lighting, camera angle, and artistic style.'
