@@ -46,13 +46,13 @@ Prerequisites:
 
 Install dependencies:
 
-	npm install
+    npm install
 
 Create frontend environment file:
 
 File: .env
 
-	VITE_API_BASE_URL=http://localhost:5000/api
+    VITE_API_BASE_URL=http://localhost:5000/api
 
 Important: frontend only needs VITE_API_BASE_URL.
 
@@ -60,19 +60,19 @@ Important: frontend only needs VITE_API_BASE_URL.
 
 Development:
 
-	npm run dev
+    npm run dev
 
 Production build:
 
-	npm run build
+    npm run build
 
 Preview production build:
 
-	npm run preview
+    npm run preview
 
 Lint:
 
-	npm run lint
+    npm run lint
 
 ## Feature Walkthrough
 
@@ -105,17 +105,17 @@ If your backend is hosted elsewhere, update VITE_API_BASE_URL.
 
 ## Folder Structure
 
-	frontend/
-	  src/
-		components/
-		  WorkflowText.jsx
-		  WorkflowImage.jsx
-		  ImageCard.jsx
-		  Navbar.jsx
-		utils/
-		  apiHelpers.js
-		App.jsx
-		main.jsx
+    frontend/
+      src/
+    	components/
+    	  WorkflowText.jsx
+    	  WorkflowImage.jsx
+    	  ImageCard.jsx
+    	  Navbar.jsx
+    	utils/
+    	  apiHelpers.js
+    	App.jsx
+    	main.jsx
 
 ## Portfolio-Ready Summary
 
