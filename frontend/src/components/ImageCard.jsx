@@ -19,7 +19,7 @@ const ImageCard = ({ imageUrl, title, onDownload }) => {
           <a
             href={imageUrl}
             download="generated-image.png"
-            className="inline-block px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600 transition"
+            className="inline-block px-4 py-2 bg-indigo-500 text-white rounded-lg text-sm hover:bg-indigo-600 transition cursor-pointer"
           >
             Download
           </a>

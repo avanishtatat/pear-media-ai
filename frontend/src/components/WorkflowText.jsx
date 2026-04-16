@@ -75,7 +75,7 @@ const WorkflowText = () => {
           <button
             onClick={handleEnhance}
             disabled={isEnhancing}
-            className="mt-3 px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition disabled:opacity-50 flex items-center gap-2"
+            className="mt-3 px-6 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
           >
             {isEnhancing ? <Loader2 className="animate-spin" size={18} /> : <Edit3 size={18} />}
             {isEnhancing ? 'Enhancing...' : 'Enhance Prompt'}
@@ -97,7 +97,7 @@ const WorkflowText = () => {
             <button
               onClick={handleGenerateImage}
               disabled={isGenerating}
-              className="mt-3 px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition disabled:opacity-50 flex items-center gap-2"
+              className="mt-3 px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
             >
               {isGenerating ? <Loader2 className="animate-spin" size={18} /> : <ImageIcon size={18} />}
               {isGenerating ? 'Generating...' : 'Generate Image'}

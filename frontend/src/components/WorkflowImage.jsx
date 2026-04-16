@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Upload, Sparkles, Loader2, Eye } from 'lucide-react';
 import { analyzeImageWithGemini, generateImageVariations } from '../utils/apiHelpers';
 import ImageCard from './ImageCard';
@@ -12,17 +12,60 @@ const WorkflowImage = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [variationImage, setVariationImage] = useState('');
   const [error, setError] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      if (uploadedImageUrl) {
+        URL.revokeObjectURL(uploadedImageUrl);
+      }
+    };
+  }, [uploadedImageUrl]);
+
+  const processImageFile = (file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setError('Please upload a valid image file');
+      return;
+    }
+
+    setUploadedImage(file);
+    const imageUrl = URL.createObjectURL(file);
+    setUploadedImageUrl((prevUrl) => {
+      if (prevUrl) {
+        URL.revokeObjectURL(prevUrl);
+      }
+      return imageUrl;
+    });
+    setAnalysis(null);
+    setVariationImage('');
+    setError('');
+  };
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setUploadedImage(file);
-      const imageUrl = URL.createObjectURL(file);
-      setUploadedImageUrl(imageUrl);
-      setAnalysis(null);
-      setVariationImage('');
-      setError('');
-    }
+    const file = e.target.files?.[0];
+    processImageFile(file);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const file = e.dataTransfer?.files?.[0];
+    processImageFile(file);
   };
 
   const handleAnalyze = async () => {
@@ -84,7 +127,14 @@ const WorkflowImage = () => {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Upload Image
           </label>
-          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+          <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition ${
+              isDragging ? 'border-indigo-500 bg-indigo-50' : 'border-gray-300'
+            }`}
+          >
             <input
               type="file"
               accept="image/*"
@@ -105,7 +155,7 @@ const WorkflowImage = () => {
         {/* Preview Uploaded Image */}
         {uploadedImageUrl && (
           <div className="mb-4">
-            <img src={uploadedImageUrl} alt="Uploaded" className="w-full h-48 object-cover rounded-lg" />
+            <img src={uploadedImageUrl} alt="Uploaded" className="w-full h-64 object-cover rounded-lg" />
           </div>
         )}
 
@@ -114,7 +164,7 @@ const WorkflowImage = () => {
           <button
             onClick={handleAnalyze}
             disabled={isAnalyzing}
-            className="w-full mb-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full mb-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
           >
             {isAnalyzing ? <Loader2 className="animate-spin" size={18} /> : <Eye size={18} />}
             {isAnalyzing ? 'Analyzing...' : 'Analyze Image'}
@@ -134,7 +184,7 @@ const WorkflowImage = () => {
             <button
               onClick={handleGenerateVariation}
               disabled={isGenerating}
-              className="mt-4 w-full px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition disabled:opacity-50 flex items-center justify-center gap-2"
+              className="mt-4 w-full px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isGenerating ? <Loader2 className="animate-spin" size={18} /> : <Sparkles size={18} />}
               {isGenerating ? 'Generating Variation...' : 'Generate Variation'}
